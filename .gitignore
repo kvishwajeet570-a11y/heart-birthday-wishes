@@ -1,0 +1,15 @@
+﻿*.before_*
+*.bak
+*.tmp
+*.py[cod]
+__pycache__/
+.DS_Store
+Thumbs.db
+.env
+.env.*
+!.env.example
+/build/
+assets/backup_old_girl_idle/
+scenes/*_before_*.py
+*.webm
+*.mp4

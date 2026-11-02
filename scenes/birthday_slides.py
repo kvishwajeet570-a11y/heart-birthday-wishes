@@ -1,4 +1,4 @@
-import asyncio
+﻿import asyncio
 import math
 import random
 from pathlib import Path
@@ -10,13 +10,13 @@ from engine.effects import EffectsManager
 
 class BirthdaySlides:
     """
-    Premium cinematic birthday slideshow for Shree.
+    Premium cinematic birthday slideshow for Sneha.
 
     Slides:
         0  Countdown 3
         1  Countdown 2
         2  Countdown 1
-        3  Happy Birthday Shree
+        3  Happy Birthday Sneha
         4  Girl + Cake
         5  Make A Wish
         6  Celebration
@@ -24,7 +24,7 @@ class BirthdaySlides:
         8  A Little Message
         9  You Are...
         10 Many More Adventures
-        11 Friendship Status
+        11 Our Special Bond
         12 Final Birthday
     """
 
@@ -807,13 +807,24 @@ class BirthdaySlides:
         )
 
         self._draw_glow_text(
-            "SHREE",
+            "SNEHA",
             self.font_big,
             self.GOLD,
             (self.width // 2, 250),
             self.GOLD,
         )
 
+        # Animated idle girl artwork
+        girl = self.images.get("girl_idle")
+        if girl:
+            float_y = math.sin(self.total_time * 1.5) * 8
+            girl_rect = pygame.Rect(
+                int(self.width * 0.66),
+                int(self.height * 0.32 + float_y),
+                int(self.width * 0.30),
+                int(self.height * 0.62),
+            )
+            self._draw_image_contain(girl, girl_rect, 0.95)
         # Animated hearts
         for i in range(7):
             angle = (
@@ -840,7 +851,7 @@ class BirthdaySlides:
             )
 
         self._center_text(
-            "Today is all about your smile ✨",
+            "Today, the whole world celebrates you, Sneha",
             self.font_subtitle,
             self.LIGHT_PINK,
             350,
@@ -902,7 +913,7 @@ class BirthdaySlides:
             )
 
         self._draw_glow_text(
-            "HAPPY BIRTHDAY SHREE",
+            "HAPPY BIRTHDAY SNEHA",
             self.font_title,
             self.WHITE,
             (self.width // 2, 70),
@@ -962,7 +973,7 @@ class BirthdaySlides:
         )
 
         self._center_text(
-            "Close your eyes... make it a good one ✨",
+            "Close your eyes... make it a good one âœ¨",
             self.font_subtitle,
             self.LIGHT_PINK,
             650,
@@ -1081,7 +1092,7 @@ class BirthdaySlides:
         )
 
         self._draw_glow_text(
-            "YAY! 🎉",
+            "YAY! ðŸŽ‰",
             self.font_big,
             self.WHITE,
             (930, 210),
@@ -1099,21 +1110,21 @@ class BirthdaySlides:
         )
 
         self._center_text(
-            "Keep smiling always.",
+            "Your smile makes my world more beautiful.",
             self.font_subtitle,
             self.LIGHT_PINK,
             390,
         )
 
         self._center_text(
-            "More laughs • more memories",
+            "More love and beautiful memories",
             self.font_small,
             self.WHITE,
             440,
         )
 
         self._center_text(
-            "• more reasons to celebrate •",
+            "â€¢ more reasons to celebrate â€¢",
             self.font_small,
             self.PINK,
             475,
@@ -1128,7 +1139,7 @@ class BirthdaySlides:
         )
 
         self._center_text(
-            "Made especially for Shree ✨",
+            "Made with love, especially for Sneha",
             self.font_small,
             self.LIGHT_PINK,
             610,
@@ -1173,7 +1184,7 @@ class BirthdaySlides:
         )
 
         # -----------------------------------------------------
-        # FRIENDSHIP CARD ONLY
+        # SPECIAL HEART CARD
         # -----------------------------------------------------
         card = self.images.get(
             "friendship_card"
@@ -1316,16 +1327,16 @@ class BirthdaySlides:
         )
 
         lines = [
-            "Some people enter our lives",
-            "and quietly make ordinary days",
-            "feel a little more special.",
+            "Sneha, you make my world brighter,",
+            "and every moment feel special.",
+            "Your smile is my favourite sight.",
             "",
-            "Thank you for all the laughs,",
-            "the crazy moments,",
-            "and the memories we've made.",
+            "May all your dreams come true,",
+            "may happiness always find you,",
+            "and may your heart always feel loved.",
             "",
-            "Stay happy. Stay awesome.",
-            "And keep being YOU. ✨",
+            "Keep shining, my beautiful Sneha.",
+            "Happy Birthday, My Heart.",
         ]
 
         start_y = 190
@@ -1379,10 +1390,10 @@ class BirthdaySlides:
         )
 
         words = [
-            "Kind",
-            "Crazy",
-            "Funny",
-            "Supportive",
+            "Beautiful",
+            "Caring",
+            "Wonderful",
+            "Precious",
             "Unforgettable",
         ]
 
@@ -1432,7 +1443,7 @@ class BirthdaySlides:
         )
 
         self._draw_glow_text(
-            "HERE'S TO",
+            "HERE'S TO US",
             self.font_title,
             self.WHITE,
             (self.width // 2, 140),
@@ -1440,7 +1451,7 @@ class BirthdaySlides:
         )
 
         self._draw_glow_text(
-            "MANY MORE ADVENTURES",
+            "MANY MORE BEAUTIFUL MEMORIES",
             self.font_title,
             self.GOLD,
             (self.width // 2, 220),
@@ -1448,8 +1459,8 @@ class BirthdaySlides:
         )
 
         cards = [
-            "More laughs",
-            "More crazy stories",
+            "More love",
+            "More smiles",
             "More memories",
             "More celebrations",
         ]
@@ -1518,7 +1529,7 @@ class BirthdaySlides:
         )
 
         self._draw_glow_text(
-            "FRIENDSHIP STATUS",
+            "OUR SPECIAL BOND",
             self.font_title,
             self.WHITE,
             (self.width // 2, 140),
@@ -1526,7 +1537,7 @@ class BirthdaySlides:
         )
 
         self._draw_glow_text(
-            "ACTIVE ✓",
+            "ACTIVE âœ“",
             self.font_huge,
             self.GOLD,
             (self.width // 2, 280),
@@ -1534,10 +1545,10 @@ class BirthdaySlides:
         )
 
         points = [
-            "Same crazy",
-            "Same silly",
-            "Same supportive",
-            "Same forever",
+            "Built on love",
+            "Filled with smiles",
+            "Always supporting",
+            "Together in every season",
         ]
 
         for i, text in enumerate(points):
@@ -1603,7 +1614,7 @@ class BirthdaySlides:
         )
 
         self._draw_glow_text(
-            "SHREE",
+            "SNEHA",
             self.font_huge,
             self.PINK,
             (self.width // 2, 380),
@@ -1611,14 +1622,14 @@ class BirthdaySlides:
         )
 
         self._center_text(
-            "Keep smiling. Keep shining. Keep being amazing. ✨",
+            "Keep smiling, Sneha. Keep shining, My Heart.",
             self.font_subtitle,
             self.LIGHT_PINK,
             500,
         )
 
         self._center_text(
-            "— Your Best Friend Theatre 🎬",
+            "â€” Made with love for Sneha ðŸŽ¬",
             self.font_small,
             self.WHITE,
             590,
@@ -1915,7 +1926,7 @@ if __name__ == "__main__":
     )
 
     pygame.display.set_caption(
-        "Best Friend Theatre — Shree"
+        "Birthday for Love",
     )
 
     show = BirthdaySlides(screen)

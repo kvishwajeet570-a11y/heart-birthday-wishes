@@ -1,9 +1,9 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
-<title>Best Friend Theatre</title>
+<title>Birthday for Love</title>
 
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
@@ -266,8 +266,8 @@ body{
     <div id="controls">Click / Space / → : Next &nbsp; | &nbsp; ← : Previous</div>
 
     <div id="start">
-        <h1>✨ Best Friend Theatre ✨</h1>
-        <p>A little cinematic friendship surprise, made specially for Shree.</p>
+        <h1>✨ Birthday for Love ✨</h1>
+        <p>A beautiful birthday surprise, made with love for Sneha.</p>
         <button id="startBtn">▶ Start Experience</button>
     </div>
 </div>
@@ -275,6 +275,10 @@ body{
 <audio id="music" preload="auto">
     <source src="assets/birthday.ogg" type="audio/ogg">
 </audio>
+<div id="recordPanel" style="position:fixed;top:12px;right:12px;z-index:99999;display:flex;gap:8px;flex-wrap:wrap;">
+<button id="recordBtn" style="padding:11px 16px;border:0;border-radius:24px;background:#7d3cff;color:white;font-weight:bold;cursor:pointer;">⬇ Download Birthday Video</button>
+<button id="stopRecordBtn" disabled style="padding:11px 16px;border:0;border-radius:24px;background:#c62828;color:white;font-weight:bold;cursor:pointer;opacity:.55;">Stop & Download</button>
+</div>
 
 <script>
 const slides = [
@@ -296,7 +300,8 @@ const slides = [
     {
         type:"birthday",
         bg:"assets/background_birthday.png",
-        title:"🎂 Happy Birthday, Shree! 🎂",
+        girl:"assets/girl_idle.png",
+        title:"Happy Birthday, Sneha!",
         subtitle:"Today is your day — full of smiles, happiness and beautiful memories."
     },
     {
@@ -304,59 +309,59 @@ const slides = [
         bg:"assets/background_birthday.png",
         girl:"assets/girl_happy.png",
         cake:"assets/cake.png",
-        title:"A Special Celebration",
-        subtitle:"Because someone as wonderful as you deserves a celebration."
+        title:"A Special Day for My Love",
+        subtitle:"Because someone as special as you deserves all the happiness in the world."
     },
     {
         type:"wish",
         bg:"assets/background_garden.png",
-        title:"🌸 My Birthday Wish For You",
-        text:"May you always have reasons to smile, people who genuinely care about you, and the courage to chase every dream you have."
+        title:"🌸 My Special Birthday Wish for Sneha",
+        text:"May your dreams come true, may your heart always be happy, and may life give you countless beautiful reasons to smile."
     },
     {
         type:"celebrate",
         bg:"assets/background_birthday.png",
         girl:"assets/girl_celebrate.png",
-        title:"🎉 Keep Smiling!",
-        subtitle:"Keep shining, keep growing, and keep being the amazing person you are."
+        title:"🎉 Keep Shining, Sneha!",
+        subtitle:"Keep glowing, keep dreaming, and never stop being the wonderful person you are."
     },
     {
         type:"memory",
         bg:"assets/background_garden.png",
-        title:"🌿 Beautiful Memories",
-        text:"Some moments become memories. Some friendships become part of the journey. Ours is one of those friendships."
+        title:"🌿 Beautiful Moments with You",
+        text:"Some moments become memories, and some people become a beautiful part of our hearts. You are that special person, Sneha."
     },
     {
         type:"message",
         bg:"assets/background_garden.png",
-        title:"A Small Message",
-        text:"Life keeps changing, people come and go, but the good moments we share are always worth remembering. Thank you for being a genuinely good friend."
+        title:"A Message from My Heart",
+        text:"Sneha, your smile makes my days brighter. You bring happiness into ordinary moments, and I hope your birthday brings you all the love and joy you deserve."
     },
     {
         type:"you",
         bg:"assets/background_garden.png",
         title:"✨ You Are...",
-        text:"Kind. Strong. Funny. Precious as a friend. And absolutely deserving of every good thing coming your way."
+        text:"Beautiful. Caring. Strong. Wonderful. And deserving of every little happiness this world has to offer."
     },
     {
         type:"adventure",
         bg:"assets/background_garden.png",
-        title:" More Adventures Ahead",
-        text:"More laughs. More crazy conversations. More memorable days. More achievements to celebrate."
+        title:" More Beautiful Memories Ahead",
+        text:"More smiles. More lovely moments. More dreams together. More beautiful memories to cherish."
     },
     {
         type:"friendship",
         bg:"assets/background_finale.png",
         card:"assets/friendship_card.png",
         title:"🤝 Friendship",
-        text:"Thank you for being a part of my journey. Here's to a beautiful friendship and many more memories ahead."
+        text:"You are a beautiful part of my life, Sneha. Here's to more smiles, more love and countless special memories."
     },
     {
         type:"finale",
         bg:"assets/background_finale.png",
-        title:"🌟 Happy Birthday, Shree! 🌟",
-        subtitle:"Stay happy. Stay blessed. Keep smiling. And keep being you.",
-        text:"— Your Best Friend"
+        title:"Happy Birthday, Sneha!",
+        subtitle:"Stay happy, stay blessed, and keep shining. You will always be special.",
+        text:"— Made with love for Sneha"
     }
 ];
 
@@ -449,6 +454,7 @@ function render(){
         html=`
             <div class="title">${s.title}</div>
             <div class="subtitle">${s.subtitle}</div>
+            <img class="character" src="${s.girl}" alt="Birthday girl">
         `;
         makeSparks(70);
     }
@@ -513,6 +519,7 @@ function next(){
         render();
     }else{
         running=false;
+        stopBirthdayRecording();
     }
 }
 
@@ -559,6 +566,95 @@ async function startExperience(){
     requestAnimationFrame(loop);
 }
 
+let birthdayRecorder = null;
+let birthdayStream = null;
+let birthdayChunks = [];
+
+async function startBirthdayRecording(){
+    const recordBtn = document.getElementById("recordBtn");
+    const stopBtn = document.getElementById("stopRecordBtn");
+
+    if (!navigator.mediaDevices?.getDisplayMedia || !window.MediaRecorder) {
+        alert("Please use desktop Opera or Chrome for video recording.");
+        return;
+    }
+
+    try {
+        const stream = await navigator.mediaDevices.getDisplayMedia({
+            video: { frameRate: 30 },
+            audio: true
+        });
+
+        if (!stream.getAudioTracks().length) {
+            stream.getTracks().forEach(t => t.stop());
+            alert("Select This Tab and enable Share tab audio.");
+            return;
+        }
+
+        birthdayStream = stream;
+        birthdayChunks = [];
+
+        const mime = MediaRecorder.isTypeSupported("video/mp4")
+            ? "video/mp4"
+            : (MediaRecorder.isTypeSupported("video/webm;codecs=vp9,opus")
+                ? "video/webm;codecs=vp9,opus" : "video/webm");
+
+        birthdayRecorder = new MediaRecorder(stream, { mimeType: mime });
+
+        birthdayRecorder.ondataavailable = e => {
+            if (e.data && e.data.size) birthdayChunks.push(e.data);
+        };
+
+        birthdayRecorder.onstop = () => {
+            const actualMime = birthdayRecorder.mimeType || mime;
+            const isMp4 = actualMime.includes("mp4");
+            const blob = new Blob(birthdayChunks, {type:actualMime});
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement("a");
+            a.href = url;
+            a.download = isMp4 ? "Sneha-Birthday-Video.mp4" : "Sneha-Birthday-Video.webm";
+            document.body.appendChild(a);
+            a.click();
+            a.remove();
+            setTimeout(() => URL.revokeObjectURL(url), 60000);
+
+            birthdayStream?.getTracks().forEach(t => t.stop());
+            birthdayStream = null;
+            birthdayRecorder = null;
+            birthdayChunks = [];
+
+            document.getElementById("recordPanel").style.display = "flex";
+            recordBtn.disabled = false;
+            recordBtn.textContent = "⬇ Download Birthday Video";
+            stopBtn.disabled = true;
+            stopBtn.style.opacity = ".55";
+        };
+
+        stream.getVideoTracks()[0].addEventListener("ended", stopBirthdayRecording);
+        birthdayRecorder.start(1000);
+        document.getElementById("recordPanel").style.display = "none";
+
+        recordBtn.disabled = true;
+        recordBtn.textContent = "● Recording...";
+        stopBtn.disabled = false;
+        stopBtn.style.opacity = "1";
+
+        await startExperience();
+
+    } catch (err) {
+        console.error(err);
+        alert("Recording cancelled or unavailable. Please try again in desktop Opera.");
+    }
+}
+
+function stopBirthdayRecording(){
+    if (birthdayRecorder && birthdayRecorder.state !== "inactive") {
+        birthdayRecorder.stop();
+    }
+}
+
+document.getElementById("recordBtn").addEventListener("click", startBirthdayRecording);
+document.getElementById("stopRecordBtn").addEventListener("click", stopBirthdayRecording);
 document.getElementById("startBtn").addEventListener("click",startExperience);
 
 document.addEventListener("keydown",e=>{
