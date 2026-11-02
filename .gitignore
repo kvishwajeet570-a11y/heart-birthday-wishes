@@ -13,3 +13,4 @@ assets/backup_old_girl_idle/
 scenes/*_before_*.py
 *.webm
 *.mp4
+node_modules/
